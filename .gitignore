@@ -1,3 +1,7 @@
+node_modules
+.env
+.eslintrc.cjs
+
 # Logs
 logs
 *.log
@@ -23,5 +27,3 @@ dist-ssr
 *.sln
 *.sw?
 
-node_modules
-.env
