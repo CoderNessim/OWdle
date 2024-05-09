@@ -27,9 +27,10 @@ export default function Login() {
           : null,
     },
   });
-  const { mutate, isPending, isError } = useLogin();
+  const { mutate, isPending } = useLogin();
 
   function handleSubmit(data) {
+    console.log(data);
     mutate(data);
     form.reset();
   }
@@ -84,7 +85,11 @@ export default function Login() {
             {`Don't have an account? Register`}
           </Anchor>
           <Group>
-            <Button radius="xl" onClick={() => navigate(-1)} disabled={isPending}>
+            <Button
+              radius="xl"
+              onClick={() => navigate('/')}
+              disabled={isPending}
+            >
               Back
             </Button>
             <Button type="submit" radius="xl" disabled={isPending}>

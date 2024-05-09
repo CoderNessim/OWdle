@@ -4,18 +4,33 @@ export async function signup({ email, password, name }) {
   const { data: user, error: signupError } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      data: {
+        first_name: name,
+      },
+      emailRedirectTo: 'http://localhost:5173/verified',
+    },
   });
 
   if (signupError) throw new Error(signupError.message);
 
-  // const { data, error } = await supabase
-  //   .from('users')
-  //   .insert([{ email, name, user_id: user.id }])
-  //   .single();
-
-  // if (error) throw new Error(error.message);
-
   return user;
+}
+
+export async function uploadUser(data) {
+  console.log(data);
+  const { error } = await supabase
+    .from('users')
+    .insert([
+      {
+        email: data.email,
+        name: data.identities[0].identity_data.first_name,
+        user_id: data.id,
+        verified: true,
+      },
+    ])
+    .single();
+  if (error) throw new Error(error.message);
 }
 
 export async function verifyEmail(token) {

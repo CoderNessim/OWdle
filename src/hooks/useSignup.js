@@ -1,13 +1,12 @@
 import { notifications } from '@mantine/notifications';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { signup } from '../services/apiAuth';
 import { useNavigate } from 'react-router-dom';
 
 export function useSignup() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const { mutate, isPending, isError } = useMutation({
-    mutationFn: ({ email, password }) => signup({ email, password }),
+    mutationFn: ({ email, password, name }) => signup({ email, password, name }),
     onSuccess: () => {
       notifications.show({
         title: `Registration successful!`,

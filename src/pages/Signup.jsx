@@ -31,16 +31,17 @@ export default function Signup() {
     },
   });
 
-  const { mutate, isPending, isError } = useSignup();
+  const { mutate, isPending } = useSignup();
 
   function handleSubmit(data) {
+    console.log(data);
     mutate(data);
   }
 
   return (
     <Paper radius="md" p="xl" withBorder>
       <Text size="lg" fw={500} style={{ paddingBottom: '20px' }}>
-        Welcome to Overwatchdle, register to create an account
+        Welcome to Overwatchdle! Register to create an account
       </Text>
       <form
         onSubmit={form.onSubmit((data) => {
@@ -97,7 +98,11 @@ export default function Signup() {
             Already have an account? Login
           </Anchor>
           <Group>
-            <Button radius="xl" onClick={() => navigate(-1)} disabled={isPending}>
+            <Button
+              radius="xl"
+              onClick={() => navigate('/')}
+              disabled={isPending}
+            >
               Back
             </Button>
             <Button type="submit" radius="xl" disabled={isPending}>

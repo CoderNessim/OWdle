@@ -10,12 +10,11 @@ export function useLogin() {
     mutationFn: ({ email, password }) => login({ email, password }),
     onSuccess: (user) => {
       notifications.show({
-        title: `Welcome back, ${user.name}!`,
+        title: `Welcome back, ${user.user.identities[0].identity_data.first_name}!`,
         message: 'Login was successful',
       });
       navigate('/app');
-      console.log(user)
-      queryClient.setQueryData(['user'], user);
+      queryClient.setQueryData(['user'], user.user);
     },
     onError: (error) => {
       notifications.show({
