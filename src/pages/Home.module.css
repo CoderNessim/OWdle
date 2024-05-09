@@ -8,13 +8,18 @@
   justify-content: center; /* Horizontal centering */
 }
 
+
+
 .inner {
   position: relative;
   width: 100%; /* Ensures it takes the full width of the wrapper */
-  max-width: 700px; /* Optional: if you want to limit the width */
-  padding: 20px; /* Padding around the content */
+  max-width: 90%; /* Increased max-width to allow more space utilization on larger screens */
+  padding: 2rem; /* Uniform padding */
   box-sizing: border-box; /* Includes padding in width calculation */
+  margin: auto; /* Helps in center alignment */
 }
+
+
 
 .title {
   font-family: "Greycliff CF", sans-serif; /* Assuming --mantine-font-family to be sans-serif */

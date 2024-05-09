@@ -10,17 +10,15 @@ import {
   Stack,
 } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
+import { useLogin } from '../hooks/useLogin';
 
 export default function Login() {
   const navigate = useNavigate();
   const form = useForm({
     initialValues: {
       email: '',
-      name: '',
       password: '',
-      terms: true,
     },
-
     validate: {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
       password: (val) =>
@@ -29,13 +27,23 @@ export default function Login() {
           : null,
     },
   });
+  const { mutate, isPending, isError } = useLogin();
+
+  function handleSubmit(data) {
+    mutate(data);
+    form.reset();
+  }
 
   return (
     <Paper radius="md" p="xl" withBorder>
       <Text size="lg" fw={500} style={{ paddingBottom: '20px' }}>
-        Welcome to Overwatchdle, login to your account
+        Welcome back to Overwatchdle!
       </Text>
-      <form onSubmit={form.onSubmit(() => {})}>
+      <form
+        onSubmit={form.onSubmit((data) => {
+          handleSubmit(data);
+        })}
+      >
         <Stack>
           <TextInput
             required
@@ -76,10 +84,10 @@ export default function Login() {
             {`Don't have an account? Register`}
           </Anchor>
           <Group>
-            <Button radius="xl" onClick={() => navigate(-1)}>
+            <Button radius="xl" onClick={() => navigate(-1)} disabled={isPending}>
               Back
             </Button>
-            <Button type="submit" radius="xl">
+            <Button type="submit" radius="xl" disabled={isPending}>
               Login
             </Button>
           </Group>

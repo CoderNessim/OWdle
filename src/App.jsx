@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import AppLayout from './pages/AppLayout';
 import Error from './ui/Error';
 import Signup from './pages/Signup';
+import VerificationPage from './pages/VerificationPage';
 
 function App() {
   const queryClient = new QueryClient({
@@ -33,6 +34,10 @@ function App() {
       path: '/app',
       element: <AppLayout />,
       children: [{}],
+    },
+    {
+      path: '/verified',
+      element: <VerificationPage />
     },
     {
       path: '*',

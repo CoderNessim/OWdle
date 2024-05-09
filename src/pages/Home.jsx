@@ -7,6 +7,15 @@ export default function Home() {
   return (
     <div className={classes.wrapper}>
       <Container size={700} className={classes.inner}>
+        <Text
+          component="span"
+          variant="gradient"
+          gradient={{ from: 'blue', to: 'cyan' }}
+          inherit
+          style={{ fontSize: '30px', fontWeight: 'bold' }} // You can adjust the size as needed
+        >
+          Overwatchdle
+        </Text>{' '}
         <h1 className={classes.title}>
           An{' '}
           <Text
@@ -17,15 +26,13 @@ export default function Home() {
           >
             Overwatch inspired
           </Text>{' '}
-          Worlde game
+          Wordle game
         </h1>
-
         <Text className={classes.description} color="dimmed">
           Dive into a blend of strategy and fun designed for Overwatch fans and
           Wordle enthusiasts alike. Each puzzle is a new opportunity to test
           your knowledge and quick thinking.
         </Text>
-
         <Group className={classes.controls}>
           <Button
             size="xl"

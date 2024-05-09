@@ -1,9 +1,13 @@
+import Header from '../ui/Header';
+import { Outlet } from 'react-router-dom';
+
 function AppLayout() {
   return (
-    <div>
-      
-    </div>
-  )
+    <>
+      <Header />
+      <Outlet />
+    </>
+  );
 }
 
-export default AppLayout
+export default AppLayout;
