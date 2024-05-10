@@ -17,6 +17,7 @@ export function useLogin() {
       queryClient.setQueryData(['user'], user.user);
     },
     onError: (error) => {
+      console.log(error)
       notifications.show({
         title: 'There was an error while logging in',
         message: error.message,

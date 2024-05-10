@@ -1,35 +1,45 @@
-import { useState } from 'react';
 import { Container, Group } from '@mantine/core';
+import { useState } from 'react';
 import classes from './Header.module.css';
+import HeaderItem from './HeaderItem';
+import { useNavigate } from 'react-router-dom';
+import imagePath from '../assets/overwatchdleFINAL-ezgif.com-webp-to-jpg-converter.jpg';
 
-export default function Header({ loggedIn }) {
-  // const [active, setActive] = useState(links[0].link);
-
-  // const items =
-  //   <a
-  //     key={link.label}
-  //     href={link.link}
-  //     className={classes.link}
-  //     data-active={active === link.link || undefined}
-  //     onClick={(event) => {
-  //       event.preventDefault();
-  //       setActive(link.link);
-  //     }}
-  //   >
-  //     {link.label}
-  //   </a>
-  
-
+export default function Header() {
+  const links = [
+    {
+      link: 'settings',
+      label: 'Settings',
+    },
+    {
+      link: 'profile',
+      label: 'Profile',
+    },
+  ];
+  const [active, setActive] = useState(null);
+  const navigate = useNavigate();
   return (
     <header className={classes.header}>
       <Container size="md" className={classes.inner}>
         <img
           className={classes.logo}
-          src="https://qmezgmkxttnfzmnafzvz.supabase.co/storage/v1/object/sign/logos/owlogo.jpeg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJsb2dvcy9vd2xvZ28uanBlZyIsImlhdCI6MTcxNTE5NzI0MCwiZXhwIjoxNzQ2NzMzMjQwfQ.Su9hDg6zod3UTrXh1WbrVUvu5-tXWhGSbpzgonVdt5A&t=2024-05-08T19%3A40%3A40.989Z"
+          //client/src/assets/overwatchdleFINAL-ezgif.com-webp-to-jpg-converter.jpg
+          src={imagePath}
           alt="Overwatch logo"
+          onClick={() => {
+            setActive(null);
+            navigate('/app');
+          }}
         />
         <Group gap={5} visibleFrom="xs">
-          {/* {items} */}
+          {links.map((link, i) => (
+            <HeaderItem
+              key={i}
+              link={link}
+              active={active}
+              setActive={setActive}
+            />
+          ))}
         </Group>
       </Container>
     </header>

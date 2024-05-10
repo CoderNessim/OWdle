@@ -33,11 +33,20 @@ function App() {
     {
       path: '/app',
       element: <AppLayout />,
-      children: [{}],
+      children: [
+        {
+          path: 'settings',
+          element: <div>Settings</div>,
+        },
+        {
+          path: 'profile',
+          element: <div>Profile</div>,
+        }
+      ],
     },
     {
       path: '/verified',
-      element: <VerificationPage />
+      element: <VerificationPage />,
     },
     {
       path: '*',

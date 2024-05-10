@@ -1,17 +1,3 @@
-.header {
-  height: 56px;
-  margin-bottom: 120px;
-  background-color: #f3f3f3; /* Assuming a light body color */
-  border-bottom: 1px solid #b1b1b1; /* Assuming a gray for light mode and a darker gray for dark mode */
-}
-
-.inner {
-  height: 56px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .link {
   display: block;
   line-height: 1;
@@ -21,6 +7,7 @@
   color: #656565; /* Assuming a darker gray for text in light mode, lighter in dark mode */
   font-size: 14px; /* Assuming a small font size */
   font-weight: 500;
+  cursor: pointer;
 }
 
 .link:hover {
@@ -31,11 +18,3 @@
   background-color: #007bff; /* Assuming blue for active state */
   color: white;
 }
-
-/* Header.module.css */
-.logo {
-  width: 100px; /* Set the width as needed */
-  height: 60px; /* Maintains the aspect ratio */
-  cursor: pointer;
-}
-
