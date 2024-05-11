@@ -12,6 +12,7 @@ function HeaderItem({ link, active, setActive }) {
         event.preventDefault();
         setActive(link.link);
         navigate(link.link);
+        link.logoutMutate && link.logoutMutate();
       }}
     >
       {link.label}

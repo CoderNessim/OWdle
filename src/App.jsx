@@ -41,7 +41,15 @@ function App() {
         {
           path: 'profile',
           element: <div>Profile</div>,
-        }
+        },
+        {
+          path: 'leaderboard',
+          element: <div>Leaderboard</div>,
+        },
+        {
+          path: 'history',
+          element: <div>Match History</div>,
+        },
       ],
     },
     {

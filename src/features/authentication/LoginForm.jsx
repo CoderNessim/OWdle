@@ -29,7 +29,6 @@ function LoginForm() {
   const { mutate, isPending } = useLogin();
 
   function handleSubmit(data) {
-    console.log(data);
     mutate(data);
     form.reset();
   }

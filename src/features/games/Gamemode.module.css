@@ -1,0 +1,26 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* This makes each card take full width in its parent container */
+  margin: 1rem; /* Ensure consistent margin */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  /* Optional: hover effect to lift card */
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .wrapper {
+    width: calc(50% - 2rem); /* Adjust for two cards per row, considering margins */
+  }
+}
+
+@media (min-width: 1024px) {
+  .wrapper {
+    width: calc(33.333% - 2rem); /* Adjust for three cards per row */
+  }
+}

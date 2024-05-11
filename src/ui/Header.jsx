@@ -1,21 +1,13 @@
-import { Container, Group } from '@mantine/core';
+import { Container, Group, Loader } from '@mantine/core';
 import { useState } from 'react';
-import classes from './Header.module.css';
-import HeaderItem from './HeaderItem';
 import { useNavigate } from 'react-router-dom';
-import imagePath from '../assets/overwatchdleFINAL-ezgif.com-webp-to-jpg-converter.jpg';
+import { useHeaderLinks } from '../hooks/useHeaderLinks';
+import classes from './Header.module.css';
+import HeaderItem from '../features/header/HeaderItem';
+import imagePath from '../assets/overwatchdleFINALsssssssss-ezgif.com-webp-to-jpg-converter(1).png';
 
 export default function Header() {
-  const links = [
-    {
-      link: 'settings',
-      label: 'Settings',
-    },
-    {
-      link: 'profile',
-      label: 'Profile',
-    },
-  ];
+  const { links, isUserPending } = useHeaderLinks();
   const [active, setActive] = useState(null);
   const navigate = useNavigate();
   return (
@@ -23,7 +15,6 @@ export default function Header() {
       <Container size="md" className={classes.inner}>
         <img
           className={classes.logo}
-          //client/src/assets/overwatchdleFINAL-ezgif.com-webp-to-jpg-converter.jpg
           src={imagePath}
           alt="Overwatch logo"
           onClick={() => {
@@ -31,16 +22,20 @@ export default function Header() {
             navigate('/app');
           }}
         />
-        <Group gap={5} visibleFrom="xs">
-          {links.map((link, i) => (
-            <HeaderItem
-              key={i}
-              link={link}
-              active={active}
-              setActive={setActive}
-            />
-          ))}
-        </Group>
+        {isUserPending ? (
+          <Loader />
+        ) : (
+          <Group gap={5} visibleFrom="xs">
+            {links.map((link, i) => (
+              <HeaderItem
+                key={i}
+                link={link}
+                active={active}
+                setActive={setActive}
+              />
+            ))}
+          </Group>
+        )}
       </Container>
     </header>
   );

@@ -3,6 +3,7 @@
   margin-bottom: 120px;
   background-color: #f3f3f3; /* Assuming a light body color */
   border-bottom: 1px solid #b1b1b1; /* Assuming a gray for light mode and a darker gray for dark mode */
+  /* padding: 0; */
 }
 
 .inner {
@@ -35,7 +36,7 @@
 /* Header.module.css */
 .logo {
   width: 100px; /* Set the width as needed */
-  height: 60px; /* Maintains the aspect ratio */
+  height: 80px; /* Maintains the aspect ratio */
   cursor: pointer;
 }
 
