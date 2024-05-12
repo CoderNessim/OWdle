@@ -7,6 +7,12 @@ import AppLayout from './pages/AppLayout';
 import Error from './ui/Error';
 import Signup from './pages/Signup';
 import VerificationPage from './pages/VerificationPage';
+import DescriptionGuess, {
+  descriptionAction,
+  descriptionLoader,
+} from './features/DescriptionGuess/DescriptionGuess';
+import ImageGuess, { imageLoader } from './features/gamemode/ImageGuess';
+import AbilityGuess, { abilityLoader } from './features/gamemode/AbilityGuess';
 
 function App() {
   const queryClient = new QueryClient({
@@ -33,6 +39,7 @@ function App() {
     {
       path: '/app',
       element: <AppLayout />,
+      errorElement: <Error />,
       children: [
         {
           path: 'settings',
@@ -49,6 +56,25 @@ function App() {
         {
           path: 'history',
           element: <div>Match History</div>,
+        },
+        {
+          path: 'descriptionGuess',
+          element: <DescriptionGuess />,
+          loader: descriptionLoader,
+        },
+        {
+          path: 'imageGuess',
+          element: <ImageGuess />,
+          loader: imageLoader,
+        },
+        {
+          path: 'heroGuess',
+          element: <div>hero guess</div>,
+        },
+        {
+          path: 'abilityGuess',
+          element: <AbilityGuess />,
+          loader: abilityLoader,
         },
       ],
     },

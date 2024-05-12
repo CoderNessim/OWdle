@@ -21,6 +21,9 @@
 
 @media (min-width: 1024px) {
   .wrapper {
-    width: calc(33.333% - 2rem); /* Adjust for three cards per row */
+    width: calc(40% - 2rem); /* Adjust for three cards per row */
+    margin-left: 2rem; /* Ensure consistent margin */
+    margin-right: 2rem; /* Ensure consistent margin */
+
   }
 }

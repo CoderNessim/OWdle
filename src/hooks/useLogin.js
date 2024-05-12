@@ -12,6 +12,7 @@ export function useLogin() {
       notifications.show({
         title: `Welcome back, ${user.user.identities[0].identity_data.first_name}!`,
         message: 'Login was successful',
+        color: 'green'
       });
       navigate('/app');
       queryClient.setQueryData(['user'], user.user);

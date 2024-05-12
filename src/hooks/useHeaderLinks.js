@@ -11,10 +11,7 @@ export function useHeaderLinks() {
   const { logoutMutate } = useLogout();
   if (user) {
     links = [
-      {
-        link: 'settings',
-        label: 'Settings',
-      },
+      
       {
         link: 'profile',
         label: 'Profile',
