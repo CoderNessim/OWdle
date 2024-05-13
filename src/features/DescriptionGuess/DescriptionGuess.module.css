@@ -18,28 +18,41 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
+.input {
+  width: 300px;
+}
+
 @media (max-width: 768px) {
   .description {
     font-size: 20px; /* Larger text for larger screens */
     max-width: 400px;
   }
-}
 
-.formContainer {
-  display: flex;
-  justify-content: center;
-  padding: 20px;
+  .input {
+    width: 200px;
+  }
 }
 
 .formContent {
-  width: 100%; /* Full width within the container */
-  max-width: 400px; /* Maximum width of the form */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button {
+  margin-top: 10px;
 }
 
 .backButton {
-  margin-left: 20px;
+  margin-right: 80px;
 }
 
-.button:hover {
+.button:hover, .backButton:hover {
   background-color: #2B6CB0; /* Slightly darker on hover for feedback */
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
 }

@@ -1,24 +1,43 @@
-import { Stack, Input } from '@mantine/core'; // Ensure you import from '@mantine/core'
+import { Stack, Input } from '@mantine/core';
 
-function NumAttempts({ maxGuesses, currentTry, setCurrentTry, userGuess, setUserGuess }) {
-
+function NumAttempts({ state, dispatch, isAnswerCorrect, style }) {
   return (
     <Stack align="stretch" justify="center" gap="md">
-      {Array.from({ length: maxGuesses }).map((_, i) =>
-        currentTry >= i + 1 ? (
+      {state.attempts.map((_, i) => {
+        let inputStyle = {
+          backgroundColor:
+            state.correctness[i] === 'correct'
+              ? 'green'
+              : state.correctness[i] === 'incorrect'
+              ? 'red'
+              : 'black',
+          borderColor:
+            state.correctness[i] === 'correct'
+              ? 'green'
+              : state.correctness[i] === 'incorrect'
+              ? 'red'
+              : 'grey',
+        };
+
+        return state.currentAttempt > i ? (
           <Input
             key={i}
             variant="default"
             placeholder={`Attempt #${i + 1}`}
-            name={`userGuess${i}`}
-            disabled={currentTry != i + 1}
-            value={currentTry === i + 1 && userGuess}
-            onChange={(e) => setUserGuess(e.target.value)}
+            disabled={state.currentAttempt !== i + 1 || isAnswerCorrect}
+            value={state.currentAttempt[i]}
+            onChange={(e) =>
+              dispatch({ type: 'setUserGuess', payload: e.currentTarget.value })
+            }
+            className={style}
+            style={inputStyle}
           />
-        ) : null
-      )}
+        ) : null;
+      })}
     </Stack>
   );
 }
 
 export default NumAttempts;
+
+//state.currentAttempt[i]

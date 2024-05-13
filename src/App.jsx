@@ -8,7 +8,6 @@ import Error from './ui/Error';
 import Signup from './pages/Signup';
 import VerificationPage from './pages/VerificationPage';
 import DescriptionGuess, {
-  descriptionAction,
   descriptionLoader,
 } from './features/DescriptionGuess/DescriptionGuess';
 import ImageGuess, { imageLoader } from './features/gamemode/ImageGuess';

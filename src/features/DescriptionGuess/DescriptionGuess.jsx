@@ -1,60 +1,135 @@
 /* eslint-disable react-refresh/only-export-components */
-import { Form, useLoaderData, useNavigate } from 'react-router-dom';
-import { IoArrowBackOutline } from 'react-icons/io5';
-import { Button, Input } from '@mantine/core';
+import {
+  Form,
+  useLoaderData,
+  useNavigate,
+  useRevalidator,
+} from 'react-router-dom';
+import { Button } from '@mantine/core';
+import { useReducer, useState } from 'react';
+import { useWindowSize } from 'react-use';
 import { getRandomCharacter } from '../../services/apiOverwatch';
-import styles from './DescriptionGuess.module.css';
 import NumAttempts from '../../ui/NumAttempts';
-import { useState } from 'react';
+import styles from './DescriptionGuess.module.css';
+import BackButton from '../../ui/BackButton';
+import Confetti from 'react-confetti';
+import Loader from '../../ui/Loader';
+
+const numTries = 3;
+
+const initialState = {
+  userGuess: '',
+  currentAttempt: 1,
+  attempts: new Array(numTries).fill(''),
+  correctness: new Array(numTries).fill(null),
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'setUserGuess':
+      return { ...state, userGuess: action.payload };
+    case 'setAttempt': {
+      const newAttempts = [...state.attempts];
+      const newCorrectness = [...state.correctness];
+      newAttempts[state.currentAttempt - 1] = action.payload.guess;
+      newCorrectness[state.currentAttempt - 1] = action.payload.correct
+        ? 'correct'
+        : 'incorrect';
+      return {
+        ...state,
+        attempts: newAttempts,
+        correctness: newCorrectness,
+        userGuess: '',
+      };
+    }
+
+    case 'incrementAttempt':
+      return { ...state, currentAttempt: state.currentAttempt + 1 };
+    case 'winGame':
+      return { ...state };
+    case 'resetGame':
+      return initialState;
+    default:
+      return state;
+  }
+}
 
 export default function DescriptionGuess() {
+  const [state, dispatch] = useReducer(reducer, initialState);
   const character = useLoaderData();
+  const revalidator = useRevalidator();
+  const isRevalidatorLoading = revalidator.state === 'loading';
+  const correctAnswer = character.name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
   const navigate = useNavigate();
   const descriptionString = character.description.replaceAll(
     character.name,
     '__'
   );
-  console.log(character);
-  const numTries = 3;
-  const [currentTry, setCurrentTry] = useState(1);
-  const [userGuess, setUserGuess] = useState('');
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState(false); 
+  const { width, height } = useWindowSize();
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (currentTry >= numTries) return;
-    setCurrentTry(currentTry + 1);
-    setUserGuess('');
+    if (!state.userGuess) return;
+
+    const isCorrect = state.userGuess.toLowerCase() === correctAnswer;
+    setIsAnswerCorrect(isCorrect);
+
+    dispatch({
+      type: 'setAttempt',
+      payload: { guess: state.userGuess, correct: isCorrect },
+    });
+
+    if (isCorrect) {
+      dispatch({ type: 'winGame' });
+    } else {
+      dispatch({ type: 'incrementAttempt' });
+    }
+  }
+
+  function handleReset() {
+    setIsAnswerCorrect(false);
+    dispatch({ type: 'resetGame' });
+    revalidator.revalidate();
   }
 
   return (
     <>
+      {isAnswerCorrect && (
+        <Confetti
+          recycle={false}
+          run={true}
+          gravity={0.2}
+          width={width}
+          height={height}
+        />
+      )}
+      {isRevalidatorLoading && <Loader />}
       <h1 className={styles.title}>Guess the Hero</h1>
       <div className={styles.description}>{descriptionString}</div>
-      <div className={styles.formContainer}>
-        <Form className={styles.formContent} method="POST">
-          <NumAttempts
-            maxGuesses={numTries}
-            currentTry={currentTry}
-            setCurrentTry={setCurrentTry}
-            userGuess={userGuess}
-            setUserGuess={setUserGuess}
-          />
-          <Input type="hidden" name="currentTry" value={currentTry} />
-          <Input type="hidden" name="numTries" value={numTries} />
-          <Input type="hidden" name="characterName" value={character.name} />
-          <Button
-            type="submit"
-            className={styles.button}
-            onClick={handleSubmit}
-          >
-            Submit Guess
+      <Form className={styles.formContent} onSubmit={handleSubmit}>
+        <NumAttempts
+          state={state}
+          dispatch={dispatch}
+          isAnswerCorrect={isAnswerCorrect}
+          style={styles.input}
+        />
+        {!isAnswerCorrect && state.currentAttempt <= numTries && (
+          <Button type="submit" className={styles.button}>
+            Guess
           </Button>
-        </Form>
+        )}
+        {!isAnswerCorrect && state.currentAttempt > numTries && (
+          <p>The correct answer was {character.name}</p>
+        )}
+      </Form>
+      <div className={styles.buttonGroup}>
+        <BackButton onClick={() => navigate(-1)} />
+        <Button onClick={handleReset}>Play Again</Button>
       </div>
-      <Button onClick={() => navigate(-1)} className={styles.backButton}>
-        <IoArrowBackOutline />
-        Back
-      </Button>
     </>
   );
 }
@@ -63,16 +138,3 @@ export async function descriptionLoader() {
   const data = await getRandomCharacter();
   return data;
 }
-
-export async function descriptionAction({ request }) {
-  const formData = await request.formData();
-  const userGuess = formData.get('userGuess'); // Assuming there's an input named 'userGuess'
-  console.log(userGuess);
-  return { userGuess };
-}
-
-// function checkUserGuess(guess) {
-//   // Suppose we have access to the correct answer in the session or some other way
-//   const correctAnswer = "CorrectCharacterName"; // This would typically not be hardcoded
-//   return guess.toLowerCase() === correctAnswer.toLowerCase();
-// }

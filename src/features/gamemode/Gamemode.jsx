@@ -25,6 +25,8 @@ function Gamemode({
           src={imageUrl}
           height={200}
           fallbackSrc="https://placehold.co/600x400?text=HeroImage"
+          onClick={() => navigate(`${route}`)}
+          style={{ cursor: 'pointer' }}
         />
       </Card.Section>
 
