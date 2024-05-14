@@ -1,6 +1,6 @@
-import { Stack, Input } from '@mantine/core';
+import { Stack, Select } from '@mantine/core';
 
-function NumAttempts({ state, dispatch, isAnswerCorrect, style }) {
+function NumAttempts({ state, dispatch, isAnswerCorrect, style, selectArray }) {
   return (
     <Stack align="stretch" justify="center" gap="md">
       {state.attempts.map((_, i) => {
@@ -20,17 +20,27 @@ function NumAttempts({ state, dispatch, isAnswerCorrect, style }) {
         };
 
         return state.currentAttempt > i ? (
-          <Input
+          <Select
+            clearable
+            searchable
             key={i}
             variant="default"
             placeholder={`Attempt #${i + 1}`}
             disabled={state.currentAttempt !== i + 1 || isAnswerCorrect}
-            value={state.currentAttempt[i]}
-            onChange={(e) =>
-              dispatch({ type: 'setUserGuess', payload: e.currentTarget.value })
+            searchValue={state.currentAttempt[i]}
+            onSearchChange={(value) =>
+              dispatch({ type: 'setUserGuess', payload: value })
             }
             className={style}
             style={inputStyle}
+            data={selectArray}
+            nothingFoundMessage="Nothing found..."
+            maxDropdownHeight={200}
+            comboboxProps={{
+              position: 'bottom',
+              middlewares: { flip: false, shift: false },
+              offset: 0,
+            }}
           />
         ) : null;
       })}
@@ -39,5 +49,3 @@ function NumAttempts({ state, dispatch, isAnswerCorrect, style }) {
 }
 
 export default NumAttempts;
-
-//state.currentAttempt[i]

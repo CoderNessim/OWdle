@@ -2,7 +2,7 @@
   text-align: center;
   margin-bottom: 20px;
   font-size: 24px; /* Larger font size for titles */
-  color: #1A202C; /* Dark gray for better contrast */
+  color: #1a202c; /* Dark gray for better contrast */
   font-weight: 500; /* Medium weight for readability */
 }
 
@@ -11,10 +11,10 @@
   padding: 20px;
   margin: 20px auto;
   max-width: 600px; /* Limiting width for better readability */
-  background-color: #F7FAFC; /* Light background to highlight the text */
+  background-color: #f7fafc; /* Light background to highlight the text */
   border-radius: 8px; /* Soften edges */
   font-size: 18px; /* Slightly larger text for better legibility */
-  color: #2D3748; /* Soft black for text */
+  color: #2d3748; /* Soft black for text */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
@@ -43,12 +43,13 @@
   margin-top: 10px;
 }
 
-.backButton {
-  margin-right: 80px;
+.playAgain {
+  margin-left: 40px;
 }
 
-.button:hover, .backButton:hover {
-  background-color: #2B6CB0; /* Slightly darker on hover for feedback */
+.button:hover,
+.backButton:hover {
+  background-color: #2b6cb0; /* Slightly darker on hover for feedback */
 }
 
 .buttonGroup {

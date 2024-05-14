@@ -6,7 +6,7 @@ import {
   useRevalidator,
 } from 'react-router-dom';
 import { Button } from '@mantine/core';
-import { useReducer, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useWindowSize } from 'react-use';
 import { getRandomCharacter } from '../../services/apiOverwatch';
 import NumAttempts from '../../ui/NumAttempts';
@@ -14,63 +14,29 @@ import styles from './DescriptionGuess.module.css';
 import BackButton from '../../ui/BackButton';
 import Confetti from 'react-confetti';
 import Loader from '../../ui/Loader';
+import { useGameReducer } from '../../hooks/useGameReducer';
+import ModalWin from '../../ui/ModalWin';
+import ModalLose from '../../ui/ModalLose';
 
 const numTries = 3;
 
-const initialState = {
-  userGuess: '',
-  currentAttempt: 1,
-  attempts: new Array(numTries).fill(''),
-  correctness: new Array(numTries).fill(null),
-};
-
-function reducer(state, action) {
-  switch (action.type) {
-    case 'setUserGuess':
-      return { ...state, userGuess: action.payload };
-    case 'setAttempt': {
-      const newAttempts = [...state.attempts];
-      const newCorrectness = [...state.correctness];
-      newAttempts[state.currentAttempt - 1] = action.payload.guess;
-      newCorrectness[state.currentAttempt - 1] = action.payload.correct
-        ? 'correct'
-        : 'incorrect';
-      return {
-        ...state,
-        attempts: newAttempts,
-        correctness: newCorrectness,
-        userGuess: '',
-      };
-    }
-
-    case 'incrementAttempt':
-      return { ...state, currentAttempt: state.currentAttempt + 1 };
-    case 'winGame':
-      return { ...state };
-    case 'resetGame':
-      return initialState;
-    default:
-      return state;
-  }
-}
-
 export default function DescriptionGuess() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const character = useLoaderData();
+  const { state, dispatch } = useGameReducer(numTries);
+  const { data: character, selectArray } = useLoaderData();
+  console.log(character)
   const revalidator = useRevalidator();
   const isRevalidatorLoading = revalidator.state === 'loading';
-  const correctAnswer = character.name
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase();
+  const correctAnswer = character.name.toLowerCase();
   const navigate = useNavigate();
   const descriptionString = character.description.replaceAll(
     character.name,
     '__'
   );
-  const [isAnswerCorrect, setIsAnswerCorrect] = useState(false); 
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState(false);
   const { width, height } = useWindowSize();
-
+  const closeModal = () => {
+    dispatch({ type: 'closeModal' });
+  };
   function handleSubmit(e) {
     e.preventDefault();
     if (!state.userGuess) return;
@@ -83,12 +49,16 @@ export default function DescriptionGuess() {
       payload: { guess: state.userGuess, correct: isCorrect },
     });
 
-    if (isCorrect) {
-      dispatch({ type: 'winGame' });
-    } else {
-      dispatch({ type: 'incrementAttempt' });
-    }
+    if (isCorrect) dispatch({ type: 'winGame' });
+    else dispatch({ type: 'incrementAttempt' });
   }
+
+  //only way ive gotten modal to close after a loss is using this useEffect hook
+  useEffect(() => {
+    if (state.attempts[numTries - 1] && !isAnswerCorrect) {
+      dispatch({ type: 'loseGame' });
+    }
+  }, [state.attempts, dispatch, isAnswerCorrect]);
 
   function handleReset() {
     setIsAnswerCorrect(false);
@@ -99,13 +69,16 @@ export default function DescriptionGuess() {
   return (
     <>
       {isAnswerCorrect && (
-        <Confetti
-          recycle={false}
-          run={true}
-          gravity={0.2}
-          width={width}
-          height={height}
-        />
+        <>
+          <ModalWin showModal={state.showModal} closeModal={closeModal} />
+          <Confetti
+            recycle={false}
+            run={true}
+            gravity={0.2}
+            width={width}
+            height={height}
+          />
+        </>
       )}
       {isRevalidatorLoading && <Loader />}
       <h1 className={styles.title}>Guess the Hero</h1>
@@ -116,6 +89,7 @@ export default function DescriptionGuess() {
           dispatch={dispatch}
           isAnswerCorrect={isAnswerCorrect}
           style={styles.input}
+          selectArray={selectArray}
         />
         {!isAnswerCorrect && state.currentAttempt <= numTries && (
           <Button type="submit" className={styles.button}>
@@ -123,18 +97,30 @@ export default function DescriptionGuess() {
           </Button>
         )}
         {!isAnswerCorrect && state.currentAttempt > numTries && (
-          <p>The correct answer was {character.name}</p>
+          <>
+            <p>The correct answer was {character.name}</p>
+            <ModalLose
+              showModal={state.showModal}
+              closeModal={closeModal}
+              question={descriptionString}
+              attempts={state.attempts}
+              correctAnswer={character.name}
+              portraitLink={character.portrait}
+            />
+          </>
         )}
       </Form>
       <div className={styles.buttonGroup}>
         <BackButton onClick={() => navigate(-1)} />
-        <Button onClick={handleReset}>Play Again</Button>
+        <Button onClick={handleReset} className={styles.playAgain}>
+          Play Again
+        </Button>
       </div>
     </>
   );
 }
 
 export async function descriptionLoader() {
-  const data = await getRandomCharacter();
-  return data;
+  const { data, selectArray } = await getRandomCharacter();
+  return { data, selectArray };
 }
