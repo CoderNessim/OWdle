@@ -19,7 +19,7 @@ export async function signup({ email, password, name }) {
 
 export async function uploadUser(data) {
   console.log(data);
-  const { error } = await supabase
+  const { error: userError } = await supabase
     .from('users')
     .insert([
       {
@@ -30,7 +30,17 @@ export async function uploadUser(data) {
       },
     ])
     .single();
-  if (error) throw new Error(error.message);
+  if (userError) throw new Error(userError.message);
+
+  const { error: gameHistoryError } = await supabase
+    .from('game_history')
+    .insert([
+      {
+        user_id: data.id,
+      },
+    ])
+    .select();
+  if (gameHistoryError) throw new Error(gameHistoryError.message);
 }
 
 export async function verifyEmail(token) {

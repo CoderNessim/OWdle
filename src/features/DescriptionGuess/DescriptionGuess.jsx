@@ -15,15 +15,14 @@ import BackButton from '../../ui/BackButton';
 import Confetti from 'react-confetti';
 import Loader from '../../ui/Loader';
 import { useGameReducer } from '../../hooks/useGameReducer';
-import ModalWin from '../../ui/ModalWin';
-import ModalLose from '../../ui/ModalLose';
+import ModalWindow from '../../ui/ModalWindow';
 
 const numTries = 3;
 
 export default function DescriptionGuess() {
   const { state, dispatch } = useGameReducer(numTries);
   const { data: character, selectArray } = useLoaderData();
-  console.log(character)
+  console.log(character);
   const revalidator = useRevalidator();
   const isRevalidatorLoading = revalidator.state === 'loading';
   const correctAnswer = character.name.toLowerCase();
@@ -70,7 +69,14 @@ export default function DescriptionGuess() {
     <>
       {isAnswerCorrect && (
         <>
-          <ModalWin showModal={state.showModal} closeModal={closeModal} />
+          <ModalWindow
+            closeModal={closeModal}
+            question={descriptionString}
+            correctAnswer={correctAnswer}
+            portraitLink={character.portrait}
+            isWin={true}
+            state={state}
+          />{' '}
           <Confetti
             recycle={false}
             run={true}
@@ -99,13 +105,13 @@ export default function DescriptionGuess() {
         {!isAnswerCorrect && state.currentAttempt > numTries && (
           <>
             <p>The correct answer was {character.name}</p>
-            <ModalLose
-              showModal={state.showModal}
+            <ModalWindow
               closeModal={closeModal}
               question={descriptionString}
-              attempts={state.attempts}
-              correctAnswer={character.name}
+              correctAnswer={correctAnswer}
               portraitLink={character.portrait}
+              isWin={false}
+              state={state}
             />
           </>
         )}

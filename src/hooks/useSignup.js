@@ -13,7 +13,6 @@ export function useSignup() {
         message: 'Confirmation link was sent to this email',
         color: 'green',
       });
-      // queryClient.setQueryData(['user'], user);
       navigate('/');
     },
     onError: (error) => {

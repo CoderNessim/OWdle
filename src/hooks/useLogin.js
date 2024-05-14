@@ -16,6 +16,7 @@ export function useLogin() {
       });
       navigate('/app');
       queryClient.setQueryData(['user'], user.user);
+      
     },
     onError: (error) => {
       console.log(error)
@@ -26,5 +27,7 @@ export function useLogin() {
       });
     },
   });
+
+
   return { mutate, isPending, isError };
 }

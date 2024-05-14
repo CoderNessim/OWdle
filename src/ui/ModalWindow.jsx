@@ -9,11 +9,11 @@ import {
 } from '@mantine/core';
 import Copy from './Copy';
 
-function ModalLose({
-  showModal,
+function ModalWindow({
   closeModal,
   question,
-  attempts,
+  isWin,
+  state,
   correctAnswer,
   portraitLink,
 }) {
@@ -22,8 +22,13 @@ function ModalLose({
   const copyContent = `
     Question: ${question}
     Attempts:
-    ${attempts
-      .map((attempt, index) => `Attempt #${index + 1}: ${attempt} 🟥`)
+    ${state.attempts
+      .map(
+        (attempt, index) =>
+          `Attempt #${index + 1}: ${attempt} ${
+            attempt.toLowerCase() === correctAnswer ? '🟩' : '🟥'
+          }`
+      )
       .join('\n')}
     Correct Answer: ${correctAnswer}
   `;
@@ -31,7 +36,7 @@ function ModalLose({
   return (
     <Modal
       title="Results:"
-      opened={showModal}
+      opened={state.showModal}
       onClose={() => closeModal()}
       overlayOpacity={0.55}
       overlayBlur={2}
@@ -45,9 +50,16 @@ function ModalLose({
         Your attempts:
       </Text>
       <List withPadding>
-        {attempts.map((attempt, index) => (
+        {state.attempts.map((attempt, index) => (
           <ListItem key={index}>
-            <Text span color={theme.colors.red[6]}>
+            <Text
+              span
+              color={`${
+                attempt.toLowerCase() === correctAnswer
+                  ? theme.colors.green[6]
+                  : theme.colors.red[6]
+              }`}
+            >
               Attempt #{index + 1}: {attempt}
             </Text>
           </ListItem>
@@ -66,17 +78,21 @@ function ModalLose({
         <Text>
           The correct answer was:{' '}
           <a href={portraitLink} target="_blank" rel="noopener noreferrer">
-            {correctAnswer}
+            {correctAnswer[0].toUpperCase() + correctAnswer.slice(1)}
           </a>
         </Text>
         <Copy copyContent={copyContent} />
       </Box>
 
-      <Text color="red" align="center" style={{ marginTop: theme.spacing.md }}>
-        Sorry, you lose! 😔
+      <Text
+        color={`${isWin ? 'green' : 'red'}`}
+        align="center"
+        style={{ marginTop: theme.spacing.md }}
+      >
+        {isWin ? 'You won! 🥳' : 'Sorry, you lose! 😔'}
       </Text>
     </Modal>
   );
 }
 
-export default ModalLose;
+export default ModalWindow;

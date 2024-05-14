@@ -7,7 +7,6 @@ export function useVerification() {
     queryKey: ['user'],
     queryFn: getUser,
   });
-
   const { mutate } = useMutation({
     mutationFn: (data) => uploadUser(data),
     onSuccess: () => {
