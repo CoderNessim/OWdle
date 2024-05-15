@@ -35,8 +35,8 @@ function GamemodeContainer() {
       <Gamemode
         imageUrl={roadhogImg}
         route="abilityGuess"
-        badgeColor="yellow"
-        badgeText="medium"
+        badgeColor="green"
+        badgeText="easy"
         title="Guess the ability"
         description="Guess the hero based on a given image of one of their abilities, this may include their weapons"
       />

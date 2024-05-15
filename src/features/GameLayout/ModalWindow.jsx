@@ -7,8 +7,8 @@ import {
   Divider,
   useMantineTheme,
 } from '@mantine/core';
-import Copy from './Copy';
-import { useGameHistory } from '../hooks/useGameHistory';
+import Copy from '../../ui/Copy';
+import { useGameHistory } from '../../hooks/useGameHistory';
 import { useEffect } from 'react';
 
 function ModalWindow({
@@ -18,10 +18,12 @@ function ModalWindow({
   state,
   correctAnswer,
   portraitLink,
+  gamemode,
+  imageQuestion,
 }) {
+  console.log(imageQuestion);
   const theme = useMantineTheme();
   const { mutate, gameHistory, user } = useGameHistory();
-
   const copyContent = `
     Question: ${question}
     Attempts:
@@ -43,6 +45,7 @@ function ModalWindow({
         currentGameHistory: gameHistory,
         attempts: state?.attempts,
         correctAnswer,
+        gamemode,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,9 +61,11 @@ function ModalWindow({
       size="lg" // Larger modal size
     >
       <Text size="md" weight={500} style={{ marginBottom: theme.spacing.sm }}>
-        {question}
+        {!imageQuestion && question}
       </Text>
-
+      {imageQuestion && (
+        <div style={{ backgroundColor: 'black', display: 'flex', justifyContent: 'center', borderRadius: '5px', marginBottom: '10px' }}>{imageQuestion}</div>
+      )}
       <Text weight={500} style={{ marginBottom: theme.spacing.xs }}>
         Your attempts:
       </Text>
@@ -80,9 +85,7 @@ function ModalWindow({
           </ListItem>
         ))}
       </List>
-
       <Divider style={{ margin: `${theme.spacing.md}px 0` }} />
-
       <Box
         style={{
           display: 'flex',
@@ -98,7 +101,6 @@ function ModalWindow({
         </Text>
         <Copy copyContent={copyContent} />
       </Box>
-
       <Text
         color={`${isWin ? 'green' : 'red'}`}
         align="center"

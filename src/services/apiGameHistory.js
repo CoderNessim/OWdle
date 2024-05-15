@@ -7,9 +7,9 @@ export async function uploadGame({
   currentGameHistory,
   attempts,
   correctAnswer,
+  gamemode
 }) {
   console.log('Current Game History:', currentGameHistory);
-
   let parsedGameHistory = [];
   if (currentGameHistory && currentGameHistory.games) {
     try {
@@ -28,7 +28,7 @@ export async function uploadGame({
     isWin: isWin,
     numAttempts: attempts?.length || 0,
     attempts: attempts || [],
-    gamemode: 'description guess'
+    gamemode: gamemode
   });
 
   console.log('Updated Game History:', parsedGameHistory);

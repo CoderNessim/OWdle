@@ -1,35 +1,32 @@
 /* eslint-disable react-refresh/only-export-components */
-import {
-  Form,
-  useLoaderData,
-  useNavigate,
-  useRevalidator,
-} from 'react-router-dom';
+import { Form, useNavigate, useRevalidator } from 'react-router-dom';
 import { Button } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { useWindowSize } from 'react-use';
-import { getRandomCharacter } from '../../services/apiOverwatch';
-import NumAttempts from '../../ui/NumAttempts';
+import NumAttempts from './NumAttempts';
 import BackButton from '../../ui/BackButton';
 import Confetti from 'react-confetti';
 import Loader from '../../ui/Loader';
 import { useGameReducer } from '../../hooks/useGameReducer';
-import ModalWindow from '../../ui/ModalWindow';
+import ModalWindow from './ModalWindow';
 import { notifications } from '@mantine/notifications';
-import styles from './GameLayout.module.css'
-const numTries = 3;
+import styles from './GameLayout.module.css';
 
-export default function GameLayout() {
+export default function GameLayout({
+  correctAnswer,
+  numTries,
+  gamemode,
+  gameContent,
+  selectArray,
+  question,
+  imageQuestion,
+  portrait,
+}) {
   const { state, dispatch } = useGameReducer(numTries);
-  const { data: character, selectArray } = useLoaderData();
   const revalidator = useRevalidator();
   const isRevalidatorLoading = revalidator.state === 'loading';
-  const correctAnswer = character.name.toLowerCase();
   const navigate = useNavigate();
-  const descriptionString = character.description.replaceAll(
-    character.name,
-    '__'
-  );
+
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(false);
   const { width, height } = useWindowSize();
   const closeModal = () => {
@@ -66,6 +63,7 @@ export default function GameLayout() {
     if (state.attempts[numTries - 1] && !isAnswerCorrect) {
       dispatch({ type: 'loseGame' });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.attempts, dispatch, isAnswerCorrect]);
 
   function handleReset() {
@@ -73,7 +71,6 @@ export default function GameLayout() {
     setIsAnswerCorrect(false);
     dispatch({ type: 'resetGame' });
   }
-  console.log(state.attempts);
 
   return (
     <>
@@ -81,12 +78,14 @@ export default function GameLayout() {
         <>
           <ModalWindow
             closeModal={closeModal}
-            question={descriptionString}
+            question={question}
             correctAnswer={correctAnswer}
-            portraitLink={character.portrait}
+            portraitLink={portrait}
             isWin={true}
             state={state}
-          />{' '}
+            gamemode={gamemode}
+            imageQuestion={imageQuestion}
+          />
           <Confetti
             recycle={false}
             run={true}
@@ -97,8 +96,7 @@ export default function GameLayout() {
         </>
       )}
       {isRevalidatorLoading && <Loader />}
-      <h1 className={styles.title}>Guess the Description</h1>
-      <div className={styles.description}>{descriptionString}</div>
+      {gameContent}
       <Form className={styles.formContent} onSubmit={handleSubmit}>
         <NumAttempts
           state={state}
@@ -116,14 +114,19 @@ export default function GameLayout() {
 
         {!isAnswerCorrect && state.currentAttempt > numTries && (
           <>
-            <p>The correct answer was {character.name}</p>
+            <p>
+              The correct answer was{' '}
+              {correctAnswer[0].toUpperCase() + correctAnswer.slice(1)}
+            </p>
             <ModalWindow
               closeModal={closeModal}
-              question={descriptionString}
+              question={question}
               correctAnswer={correctAnswer}
-              portraitLink={character.portrait}
+              portraitLink={portrait}
               isWin={false}
               state={state}
+              gamemode={gamemode}
+              imageQuestion={imageQuestion}
             />
           </>
         )}
@@ -136,10 +139,4 @@ export default function GameLayout() {
       </div>
     </>
   );
-}
-
-export async function descriptionLoader() {
-  const { data, selectArray } = await getRandomCharacter();
-  console.log(data)
-  return { data, selectArray };
 }

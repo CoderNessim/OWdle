@@ -17,8 +17,8 @@ export function useGameHistory() {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: ({ isWin, id, currentGameHistory, attempts, correctAnswer }) =>
-      uploadGame({ isWin, id, currentGameHistory, attempts, correctAnswer }),
+    mutationFn: ({ isWin, id, currentGameHistory, attempts, correctAnswer, gamemode }) =>
+      uploadGame({ isWin, id, currentGameHistory, attempts, correctAnswer, gamemode }),
     onSuccess: (history) => {
       console.log(history)
       queryClient.setQueryData(['game_history'], history);

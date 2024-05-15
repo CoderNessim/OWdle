@@ -4,8 +4,8 @@ import GameLayout from '../GameLayout/GameLayout';
 import GameContent from '../../ui/GameContent';
 
 function DescriptionGuess() {
-  const correctAnswer = character.name.toLowerCase();
   const { data: character, selectArray } = useLoaderData();
+  const correctAnswer = character.name.toLowerCase();
   const numTries = 3;
   const gamemode = 'Description Guess';
   const descriptionString = character.description.replaceAll(
@@ -21,8 +21,10 @@ function DescriptionGuess() {
       correctAnswer={correctAnswer}
       numTries={numTries}
       gamemode={gamemode}
-      titleContent={gameContent}
+      gameContent={gameContent}
       selectArray={selectArray}
+      question={descriptionString}
+      portrait={character.portrait}
     />
   );
 }

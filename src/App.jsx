@@ -7,11 +7,11 @@ import AppLayout from './pages/AppLayout';
 import Error from './ui/Error';
 import Signup from './pages/Signup';
 import VerificationPage from './pages/VerificationPage';
-import GameLayout, {
-  descriptionLoader,
-} from './features/GameLayout/GameLayout';
 import ImageGuess, { imageLoader } from './features/gamemodes/ImageGuess';
 import AbilityGuess, { abilityLoader } from './features/gamemodes/AbilityGuess';
+import DescriptionGuess, {
+  descriptionLoader,
+} from './features/gamemodes/DescriptionGuess';
 
 function App() {
   const queryClient = new QueryClient({
@@ -58,7 +58,7 @@ function App() {
         },
         {
           path: 'descriptionGuess',
-          element: <GameLayout />,
+          element: <DescriptionGuess />,
           loader: descriptionLoader,
         },
         {
