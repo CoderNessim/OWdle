@@ -8,6 +8,8 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import Copy from './Copy';
+import { useGameHistory } from '../hooks/useGameHistory';
+import { useEffect } from 'react';
 
 function ModalWindow({
   closeModal,
@@ -18,6 +20,7 @@ function ModalWindow({
   portraitLink,
 }) {
   const theme = useMantineTheme();
+  const { mutate, gameHistory, user } = useGameHistory();
 
   const copyContent = `
     Question: ${question}
@@ -32,6 +35,18 @@ function ModalWindow({
       .join('\n')}
     Correct Answer: ${correctAnswer}
   `;
+  useEffect(() => {
+    if (state.showModal) {
+      mutate({
+        isWin,
+        id: user.id,
+        currentGameHistory: gameHistory,
+        attempts: state.attempts,
+        correctAnswer,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.showModal]);
 
   return (
     <Modal

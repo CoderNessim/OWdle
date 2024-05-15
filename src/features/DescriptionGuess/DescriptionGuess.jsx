@@ -22,7 +22,6 @@ const numTries = 3;
 export default function DescriptionGuess() {
   const { state, dispatch } = useGameReducer(numTries);
   const { data: character, selectArray } = useLoaderData();
-  console.log(character);
   const revalidator = useRevalidator();
   const isRevalidatorLoading = revalidator.state === 'loading';
   const correctAnswer = character.name.toLowerCase();

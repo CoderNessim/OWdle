@@ -62,12 +62,21 @@ export async function verifyEmail(token) {
 }
 
 export async function login({ email, password }) {
-  let { data, error } = await supabase.auth.signInWithPassword({
-    email: email,
-    password: password,
-  });
-  if (error) throw new Error(error.message);
-  return data;
+  let { data: user, error: loginError } =
+    await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+  if (loginError) throw new Error(loginError.message);
+
+  let { data: gameHistory, error: gameHistoryError } = await supabase
+    .from('game_history')
+    .select('*')
+    .eq('user_id', user.user.id)
+    .single();
+  if (gameHistoryError) throw new Error(gameHistoryError.message);
+
+  return { user, gameHistory };
 }
 
 export async function logout() {
