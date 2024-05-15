@@ -11,7 +11,7 @@ export function useGameHistory() {
 
   const { data: gameHistory } = useQuery({
     queryKey: ['game_history'],
-    queryFn: () => getGameHistory(user.id),
+    queryFn: () => getGameHistory(user?.id),
   });
 
   const queryClient = useQueryClient();

@@ -15,6 +15,7 @@ export function useLogout() {
         color: 'green',
       });
       queryClient.removeQueries({ queryKey: ['user'], exact: true });
+      queryClient.removeQueries({ queryKey: ['game_history'], exact: true });
       navigate('/', { replace: true });
     },
     onError: (error) => {

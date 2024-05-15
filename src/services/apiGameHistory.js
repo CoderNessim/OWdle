@@ -61,6 +61,7 @@ export async function uploadGame({
 }
 
 export async function getGameHistory(id) {
+  if(!id) return null;
   let { data: gameHistory, error: gameHistoryError } = await supabase
     .from('game_history')
     .select('*')

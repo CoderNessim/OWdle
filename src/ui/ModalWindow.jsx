@@ -36,12 +36,12 @@ function ModalWindow({
     Correct Answer: ${correctAnswer}
   `;
   useEffect(() => {
-    if (state.showModal) {
+    if (state.showModal && user) {
       mutate({
         isWin,
-        id: user.id,
+        id: user?.id,
         currentGameHistory: gameHistory,
-        attempts: state.attempts,
+        attempts: state?.attempts,
         correctAnswer,
       });
     }

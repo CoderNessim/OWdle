@@ -15,6 +15,7 @@ export function useLogin() {
         color: 'green',
       });
       navigate('/app');
+      console.log(gameHistory);
       queryClient.setQueryData(['user'], user.user);
       queryClient.setQueryData(['game_history'], gameHistory);
     },

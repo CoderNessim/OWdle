@@ -1,4 +1,4 @@
-import Gamemode from '../features/gamemode/Gamemode';
+import Gamemode from '../features/gamemodes/Gamemode';
 import tracerImg from '../assets/tracer.jpeg';
 import soldierImg from '../assets/SOldier-76.jpeg';
 import sombraImg from '../assets/overwatch-2-sombra-hero-select.jpeg';

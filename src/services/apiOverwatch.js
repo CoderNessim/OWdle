@@ -7,7 +7,9 @@ export async function getCharacters() {
 
 export async function getRandomCharacter() {
   const allCharacters = await getCharacters();
-  const selectArray = allCharacters.map((character) => character.name);
+  const selectArray = allCharacters.map((character) =>
+    character.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  );
   const randomIndex = Math.floor(Math.random() * allCharacters.length);
   const randomCharacter = allCharacters[randomIndex].key;
   const res = await fetch(
