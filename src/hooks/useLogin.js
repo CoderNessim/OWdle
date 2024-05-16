@@ -9,6 +9,8 @@ export function useLogin() {
   const { mutate, isPending, isError } = useMutation({
     mutationFn: ({ email, password }) => login({ email, password }),
     onSuccess: ({ user, gameHistory }) => {
+      queryClient.setQueryData(['game_history'], gameHistory);
+      queryClient.setQueryData(['user'], user.user);
       notifications.show({
         title: `Welcome back, ${user.user.identities[0].identity_data.first_name}!`,
         message: 'Login was successful',
@@ -16,8 +18,6 @@ export function useLogin() {
       });
       navigate('/app');
       console.log(gameHistory);
-      queryClient.setQueryData(['user'], user.user);
-      queryClient.setQueryData(['game_history'], gameHistory);
     },
     onError: (error) => {
       console.log(error);

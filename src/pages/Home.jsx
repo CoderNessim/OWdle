@@ -2,7 +2,7 @@ import { Container, Text, Button, Group } from '@mantine/core';
 import classes from './Home.module.css';
 import { useNavigate } from 'react-router-dom';
 import imagePath from '../assets/overwatchdleFINAL-ezgif.com-webp-to-jpg-converter(1)(1).png';
-//client/src/assets/overwatchdleFINALsssssssss-ezgif.com-webp-to-jpg-converter(1).png
+
 export default function Home() {
   const navigate = useNavigate();
   return (
@@ -14,7 +14,7 @@ export default function Home() {
           variant="gradient"
           gradient={{ from: 'blue', to: 'cyan' }}
           inherit
-          style={{ fontSize: '30px', fontWeight: 'bold',  }} // You can adjust the size as needed
+          style={{ fontSize: '30px', fontWeight: 'bold' }} // You can adjust the size as needed
         >
           Overwatchdle
         </Text>{' '}

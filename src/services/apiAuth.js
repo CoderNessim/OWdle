@@ -68,14 +68,12 @@ export async function login({ email, password }) {
       password: password,
     });
   if (loginError) throw new Error(loginError.message);
-
   let { data: gameHistory, error: gameHistoryError } = await supabase
     .from('game_history')
     .select('*')
     .eq('user_id', user.user.id)
     .single();
   if (gameHistoryError) throw new Error(gameHistoryError.message);
-
   return { user, gameHistory };
 }
 

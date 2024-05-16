@@ -9,7 +9,7 @@ export function useGameHistory() {
     queryFn: getUser,
   });
 
-  const { data: gameHistory } = useQuery({
+  const { data: gameHistory, isPending } = useQuery({
     queryKey: ['game_history'],
     queryFn: () => getGameHistory(user?.id),
   });
@@ -20,7 +20,6 @@ export function useGameHistory() {
     mutationFn: ({ isWin, id, currentGameHistory, attempts, correctAnswer, gamemode }) =>
       uploadGame({ isWin, id, currentGameHistory, attempts, correctAnswer, gamemode }),
     onSuccess: (history) => {
-      console.log(history)
       queryClient.setQueryData(['game_history'], history);
     },
     onError: (error) => {
@@ -32,5 +31,5 @@ export function useGameHistory() {
     },
   });
 
-  return { mutate, gameHistory, user };
+  return { mutate, gameHistory, user, isPending };
 }

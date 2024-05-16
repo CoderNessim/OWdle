@@ -5,7 +5,10 @@ import GameContent from '../../ui/GameContent';
 
 function DescriptionGuess() {
   const { data: character, selectArray } = useLoaderData();
-  const correctAnswer = character.name.toLowerCase();
+  const correctAnswer = character.name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
   const numTries = 3;
   const gamemode = 'Description Guess';
   const descriptionString = character.description.replaceAll(

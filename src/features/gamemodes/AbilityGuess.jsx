@@ -5,14 +5,17 @@ import GameLayout from '../GameLayout/GameLayout';
 
 function AbilityGuess() {
   const { data: character, selectArray } = useLoaderData();
-  const correctAnswer = character.name.toLowerCase();
+  const correctAnswer = character.name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
   const randomAbility =
     character.abilities[Math.floor(Math.random() * character.abilities.length)]
       .icon;
   const numTries = 3;
   const gamemode = 'Ability Guess';
   const gameContent = (
-    <GameContent gamemodeName="Hero by their Ability" bgColor='black'>
+    <GameContent gamemodeName="Hero by their Ability" bgColor="black">
       <img src={randomAbility} />
     </GameContent>
   );
@@ -28,6 +31,7 @@ function AbilityGuess() {
       question={randomAbility}
       portrait={character.portrait}
       imageQuestion={imageQuestion}
+      isImageGuess={false}
     />
   );
 }

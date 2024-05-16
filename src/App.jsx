@@ -1,5 +1,5 @@
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/react-query';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -9,18 +9,26 @@ import Signup from './pages/Signup';
 import VerificationPage from './pages/VerificationPage';
 import ImageGuess, { imageLoader } from './features/gamemodes/ImageGuess';
 import AbilityGuess, { abilityLoader } from './features/gamemodes/AbilityGuess';
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import DescriptionGuess, {
   descriptionLoader,
 } from './features/gamemodes/DescriptionGuess';
+import Profile from './pages/Profile';
 
 function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
         staleTime: 1000 * 60,
+        cacheTime: 1000 * 60 * 60 * 12,
       },
     },
   });
+
+  const persister = createSyncStoragePersister({
+    storage: window.localStorage,
+  })
 
   const router = createBrowserRouter([
     {
@@ -46,7 +54,7 @@ function App() {
         },
         {
           path: 'profile',
-          element: <div>Profile</div>,
+          element: <Profile />,
         },
         {
           path: 'leaderboard',
@@ -88,10 +96,13 @@ function App() {
   ]);
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{ persister }}
+    >
       <ReactQueryDevtools initialIsOpen={false} />
       <RouterProvider router={router} />
-    </QueryClientProvider>
+    </PersistQueryClientProvider>
   );
 }
 

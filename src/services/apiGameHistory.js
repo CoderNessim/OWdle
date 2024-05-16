@@ -7,10 +7,16 @@ export async function uploadGame({
   currentGameHistory,
   attempts,
   correctAnswer,
-  gamemode
+  gamemode,
 }) {
   console.log('Current Game History:', currentGameHistory);
   let parsedGameHistory = [];
+
+  //in case game history doesnt load which happens when authenticated user reloads page
+  if(id && currentGameHistory == undefined) {
+    currentGameHistory = await getGameHistory(id);
+  }
+
   if (currentGameHistory && currentGameHistory.games) {
     try {
       parsedGameHistory = JSON.parse(currentGameHistory.games);
@@ -23,18 +29,18 @@ export async function uploadGame({
     }
   }
   parsedGameHistory.push({
-    timePlayed: new Date().toISOString(),
+    timePlayed: new Date().toDateString(),
     correctAnswer: correctAnswer,
     isWin: isWin,
     numAttempts: attempts?.length || 0,
     attempts: attempts || [],
-    gamemode: gamemode
+    gamemode: gamemode,
   });
 
   console.log('Updated Game History:', parsedGameHistory);
   const updatedGameHistoryJSON = JSON.stringify(parsedGameHistory);
 
-  const { data: history, error } = await supabase
+  const { error } = await supabase
     .from('game_history')
     .update({
       num_wins: isWin
@@ -55,20 +61,18 @@ export async function uploadGame({
 
   const gameHistory = await getGameHistory(id);
 
-  console.log('History Data Returned:', history);
-  console.log(gameHistory);
   return gameHistory;
 }
 
 export async function getGameHistory(id) {
-  if(!id) return null;
+  if (!id) return null;
   let { data: gameHistory, error: gameHistoryError } = await supabase
     .from('game_history')
     .select('*')
     .eq('user_id', id)
     .single();
-
   if (gameHistoryError) throw new Error(gameHistoryError.message);
 
   return gameHistory;
 }
+

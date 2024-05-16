@@ -21,6 +21,7 @@ export default function GameLayout({
   question,
   imageQuestion,
   portrait,
+  isImageGuess
 }) {
   const { state, dispatch } = useGameReducer(numTries);
   const revalidator = useRevalidator();
@@ -85,6 +86,7 @@ export default function GameLayout({
             state={state}
             gamemode={gamemode}
             imageQuestion={imageQuestion}
+            isImageGuess={isImageGuess}
           />
           <Confetti
             recycle={false}

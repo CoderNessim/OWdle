@@ -10,6 +10,7 @@ import {
 import Copy from '../../ui/Copy';
 import { useGameHistory } from '../../hooks/useGameHistory';
 import { useEffect } from 'react';
+import styles from './ModalWindow.module.css';
 
 function ModalWindow({
   closeModal,
@@ -20,8 +21,8 @@ function ModalWindow({
   portraitLink,
   gamemode,
   imageQuestion,
+  isImageGuess,
 }) {
-  console.log(imageQuestion);
   const theme = useMantineTheme();
   const { mutate, gameHistory, user } = useGameHistory();
   const copyContent = `
@@ -64,7 +65,15 @@ function ModalWindow({
         {!imageQuestion && question}
       </Text>
       {imageQuestion && (
-        <div style={{ backgroundColor: 'black', display: 'flex', justifyContent: 'center', borderRadius: '5px', marginBottom: '10px' }}>{imageQuestion}</div>
+        <div
+          style={{
+            backgroundColor: `${isImageGuess ? 'white' : 'black'}`,
+          }}
+          className={styles.imageQuestion}
+        >
+          {!isImageGuess && imageQuestion}
+          {isImageGuess && <img src={portraitLink} />}
+        </div>
       )}
       <Text weight={500} style={{ marginBottom: theme.spacing.xs }}>
         Your attempts:
@@ -86,13 +95,7 @@ function ModalWindow({
         ))}
       </List>
       <Divider style={{ margin: `${theme.spacing.md}px 0` }} />
-      <Box
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
+      <Box className={styles.resultsBox}>
         <Text>
           The correct answer was:{' '}
           <a href={portraitLink} target="_blank" rel="noopener noreferrer">

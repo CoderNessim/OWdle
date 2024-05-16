@@ -1,0 +1,6 @@
+/* Example CSS to potentially adjust alignment, add to your CSS module or style */
+.description {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Aligns children to the top */
+}
