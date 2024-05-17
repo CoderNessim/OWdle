@@ -21,7 +21,6 @@ function App() {
     defaultOptions: {
       queries: {
         staleTime: 1000 * 60,
-        cacheTime: 1000 * 60 * 60 * 12,
       },
     },
   });

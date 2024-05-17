@@ -1,6 +1,6 @@
 import { Card, Image, Text, Badge, Button, Group } from '@mantine/core';
 
-function ProfileCard() {
+function ProfileCard({ user, isUserPending }) {
   return (
     <Card
       shadow="sm"
@@ -14,7 +14,11 @@ function ProfileCard() {
       </Card.Section>
 
       <Group justify="space-between" mt="md" mb="xs">
-        <Text fw={500}>Norway Fjord Adventures</Text>
+        {!isUserPending ? (
+          <Text fw={500}>{user.user_metadata.first_name}</Text>
+        ) : (
+          <Text>Loading...</Text>
+        )}
         <Badge color="green">Online</Badge>
       </Group>
 

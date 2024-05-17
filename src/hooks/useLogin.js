@@ -11,8 +11,9 @@ export function useLogin() {
     onSuccess: ({ user, gameHistory }) => {
       queryClient.setQueryData(['game_history'], gameHistory);
       queryClient.setQueryData(['user'], user.user);
+      console.log(user)
       notifications.show({
-        title: `Welcome back, ${user.user.identities[0].identity_data.first_name}!`,
+        title: `Welcome back, ${user.user.user_metadata.first_name}!`,
         message: 'Login was successful',
         color: 'green',
       });

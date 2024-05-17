@@ -15,7 +15,9 @@ export function useVerification() {
         message: 'User has been updated successfully',
         color: 'green',
       });
+      
     },
+    
     onError: (error) => {
       notifications.show({
         title: 'There was an error while verifying user',

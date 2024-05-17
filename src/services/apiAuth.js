@@ -19,7 +19,7 @@ export async function signup({ email, password, name }) {
 
 export async function uploadUser(data) {
   console.log(data);
-  const { error: userError } = await supabase
+  const { data: user, error: userError } = await supabase
     .from('users')
     .insert([
       {
@@ -32,7 +32,7 @@ export async function uploadUser(data) {
     .single();
   if (userError) throw new Error(userError.message);
 
-  const { error: gameHistoryError } = await supabase
+  const { data: gameHistory, error: gameHistoryError } = await supabase
     .from('game_history')
     .insert([
       {
@@ -41,6 +41,7 @@ export async function uploadUser(data) {
     ])
     .select();
   if (gameHistoryError) throw new Error(gameHistoryError.message);
+  return {user, gameHistory}
 }
 
 export async function verifyEmail(token) {
@@ -98,4 +99,40 @@ export async function updateUser(newEmail, newPassword) {
   });
   if (error) throw new Error(error.message);
   return data;
+}
+
+export async function updateUsername({ newUsername, id }) {
+  console.log(newUsername, id);
+  const { error: authError } = await supabase.auth.updateUser({
+    data: { first_name: newUsername },
+  });
+  if (authError) throw new Error(authError.message);
+
+  const { error: tableError } = await supabase
+    .from('users')
+    .update({ name: newUsername })
+    .eq('user_id', id)
+    .select();
+
+  if (tableError) throw new Error(tableError.message);
+}
+
+export async function deleteUser(id) {
+  const { error: deleteUserError } = await supabase.auth.admin.deleteUser(id);
+  if (deleteUserError) throw new Error(deleteUserError.message);
+
+  const { error: deleteUserFromTableError } = await supabase
+    .from('users')
+    .delete()
+    .eq('user_id', id);
+
+  if (deleteUserFromTableError)
+    throw new Error(deleteUserFromTableError.message);
+
+  const { error: deleteGameHistoryError } = await supabase
+    .from('game_history')
+    .delete()
+    .eq('user_id', id);
+
+  if (deleteGameHistoryError) throw new Error(deleteGameHistoryError.message);
 }

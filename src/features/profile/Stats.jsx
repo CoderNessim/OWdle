@@ -3,7 +3,6 @@ import { useGameHistory } from '../../hooks/useGameHistory';
 
 function Stats() {
   const { gameHistory, isPending: isGameHistoryPending } = useGameHistory();
-
   // Calculate win rate
   const totalGames = gameHistory
     ? gameHistory.num_wins + gameHistory.num_losses
@@ -12,7 +11,7 @@ function Stats() {
     totalGames > 0
       ? ((gameHistory.num_wins / totalGames) * 100).toFixed(2)
       : 'N/A';
-
+  
   return (
     <Card
       shadow="sm"

@@ -1,17 +1,7 @@
-import { Button, Card, Text } from '@mantine/core';
-import styles from './UserInfo.module.css';
-import { useQuery } from '@tanstack/react-query';
-import { getUser } from '../../services/apiAuth';
+import { Card, Text } from '@mantine/core';
 import ChangeUserData from './ChangeUserData';
 
-function UserInfo() {
-  const { data: user, isPending: isUserPending } = useQuery({
-    queryFn: getUser,
-    queryKey: ['user'],
-  });
-
-  console.log(user);
-
+function UserInfo({ user, isUserPending }) {
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Text size="lg" style={{ marginBottom: 10 }}>
@@ -25,7 +15,7 @@ function UserInfo() {
           <Text>Email: {user.email}</Text>
         </>
       )}
-      <ChangeUserData />
+      {!isUserPending && <ChangeUserData user={user} isUserPending={isUserPending} />}
     </Card>
   );
 }
