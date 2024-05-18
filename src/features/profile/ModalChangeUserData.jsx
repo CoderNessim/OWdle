@@ -3,9 +3,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
 function ModalChangeUserData({
-  id,
   type,
-  mutate,
   buttonColor,
   handleSubmitData,
 }) {

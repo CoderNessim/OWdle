@@ -7,6 +7,7 @@ export async function signup({ email, password, name }) {
     options: {
       data: {
         first_name: name,
+        profile_picture: null
       },
       emailRedirectTo: 'http://localhost:5173/verified',
     },

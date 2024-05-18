@@ -1,24 +1,23 @@
-//work in progress
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateEmail } from '../services/apiAuth';
+import { deleteProfilePicture } from '../services/apiProfilePictures';
 import { notifications } from '@mantine/notifications';
 
-export function useUpdateEmail() {
+export function useDeleteFile() {
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
-    mutationFn: ({ newEmail, id }) => updateEmail({ newEmail, id }),
+    mutationFn: ({ name, id, avatarFile }) =>
+      deleteProfilePicture({ name, id, avatarFile }),
     onSuccess: () => {
       notifications.show({
-        title: 'Email sent!',
-        message: 'Check your email for a confirmation link to update your email',
+        title: 'Profile Picture Deleted!',
+        message: 'Your profile picture will now be the default avatar',
         color: 'green',
       });
       queryClient.invalidateQueries({ queryKey: ['user'] });
     },
     onError: (error) => {
-      console.log(error.message);
       notifications.show({
-        title: 'There was an error while updating your email',
+        title: 'There was an error while deleting profile picture',
         message: error.message,
         color: 'red',
       });

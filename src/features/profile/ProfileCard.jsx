@@ -1,21 +1,32 @@
-import { Card, Image, Text, Badge, Button, Group } from '@mantine/core';
+import { Card, Image, Text, Badge, Group } from '@mantine/core';
+import { useState } from 'react';
+import ModalUploadFile from './ModalUploadFile';
+import styles from './ProfileCard.module.css';
 
 function ProfileCard({ user, isUserPending }) {
+  const name = user.user_metadata.first_name;
+  const profilePicture = user.user_metadata.profile_picture;
+  const [image, setImage] = useState('');
   return (
     <Card
       shadow="sm"
       padding="lg"
       radius="md"
       withBorder
-      style={{ width: '50%', height: '500px' }}
+      className={styles.card}
     >
       <Card.Section>
-        <Image height={160} alt="Profile Picture" />
+        <Image
+          height={300}
+          src={profilePicture}
+          fit="contain"
+          fallbackSrc="https://placehold.co/600x400?text=Profile"
+        />
       </Card.Section>
 
       <Group justify="space-between" mt="md" mb="xs">
         {!isUserPending ? (
-          <Text fw={500}>{user.user_metadata.first_name}</Text>
+          <Text fw={500}>{name}</Text>
         ) : (
           <Text>Loading...</Text>
         )}
@@ -23,13 +34,17 @@ function ProfileCard({ user, isUserPending }) {
       </Group>
 
       <Text size="sm" c="dimmed">
-        With Fjord Tours you can explore more of the magical fjord landscapes
-        with tours and activities on and around the fjords of Norway
+        Play the OWdle to improve your stats and climb your way to the top of
+        the leaderboard!
       </Text>
 
-      <Button color="blue" fullWidth mt="md" radius="md">
-        Update Profile Picture
-      </Button>
+      <ModalUploadFile
+        profilePicture={profilePicture}
+        image={image}
+        setImage={setImage}
+        name={name}
+        id={user.id}
+      />
     </Card>
   );
 }

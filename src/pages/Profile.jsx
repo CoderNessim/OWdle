@@ -14,13 +14,17 @@ function Profile() {
   return (
     <Container>
       <Grid>
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <ProfileCard user={user} isUserPending={isUserPending} />
-          <div>
-            <Stats />
-            <UserInfo user={user} isUserPending={isUserPending} />
-          </div>
-        </div>
+        {!isUserPending && (
+          <>
+            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+              <ProfileCard user={user} isUserPending={isUserPending} />
+              <div>
+                <Stats />
+                <UserInfo user={user} isUserPending={isUserPending} />
+              </div>
+            </div>
+          </>
+        )}
       </Grid>
     </Container>
   );

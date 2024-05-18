@@ -15,6 +15,7 @@ import DescriptionGuess, {
   descriptionLoader,
 } from './features/gamemodes/DescriptionGuess';
 import Profile from './pages/Profile';
+import ChangeEmailPage from './ui/ChangeEmailPage';
 
 function App() {
   const queryClient = new QueryClient({
@@ -87,6 +88,10 @@ function App() {
     {
       path: '/verified',
       element: <VerificationPage />,
+    },
+    {
+      path: '/changeEmail',
+      element: <ChangeEmailPage />
     },
     {
       path: '*',
