@@ -2,14 +2,20 @@ import { Button, Group, Modal, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
-function ModalChangeUserData({ id, type, mutate }) {
+function ModalChangeUserData({
+  id,
+  type,
+  mutate,
+  buttonColor,
+  handleSubmitData,
+}) {
   const [opened, { open, close }] = useDisclosure(false);
   const [newData, setNewData] = useState('');
 
   function handleSubmit(e) {
     e.preventDefault();
     close(); // Close modal on form submission
-    mutate({ newUsername: newData, id });
+    handleSubmitData(newData);
     setNewData('');
   }
 
@@ -17,7 +23,7 @@ function ModalChangeUserData({ id, type, mutate }) {
     <>
       <Button
         variant="outline"
-        color="orange"
+        color={buttonColor}
         style={{ margin: '10px 0' }}
         onClick={open} // Triggers the modal to open
       >

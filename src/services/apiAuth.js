@@ -41,7 +41,7 @@ export async function uploadUser(data) {
     ])
     .select();
   if (gameHistoryError) throw new Error(gameHistoryError.message);
-  return {user, gameHistory}
+  return { user, gameHistory };
 }
 
 export async function verifyEmail(token) {
@@ -90,15 +90,11 @@ export async function getUser() {
   return user;
 }
 
-export async function updateUser(newEmail, newPassword) {
-  const userData = await getUser();
-  const { data, error } = await supabase.auth.updateUser({
-    email: userData.email,
-    password: userData.password,
-    data: { email: newEmail, password: newPassword },
+export async function updatePassword({ newPassword }) {
+  const { error } = await supabase.auth.updateUser({
+    password: newPassword,
   });
   if (error) throw new Error(error.message);
-  return data;
 }
 
 export async function updateUsername({ newUsername, id }) {
@@ -111,6 +107,21 @@ export async function updateUsername({ newUsername, id }) {
   const { error: tableError } = await supabase
     .from('users')
     .update({ name: newUsername })
+    .eq('user_id', id)
+    .select();
+
+  if (tableError) throw new Error(tableError.message);
+}
+
+export async function updateEmail({ newEmail, id }) {
+  const { error: serverError } = await supabase.auth.updateUser({
+    email: newEmail,
+  });
+  if (serverError) throw new Error(serverError.message);
+
+  const { error: tableError } = await supabase
+    .from('users')
+    .update({ email: newEmail })
     .eq('user_id', id)
     .select();
 
