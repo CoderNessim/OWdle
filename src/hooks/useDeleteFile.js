@@ -5,8 +5,8 @@ import { notifications } from '@mantine/notifications';
 export function useDeleteFile() {
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
-    mutationFn: ({ name, id, avatarFile }) =>
-      deleteProfilePicture({ name, id, avatarFile }),
+    mutationFn: ({ id, avatarFile }) =>
+      deleteProfilePicture({ id, avatarFile }),
     onSuccess: () => {
       notifications.show({
         title: 'Profile Picture Deleted!',

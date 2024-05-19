@@ -18,7 +18,7 @@ function ModalUploadFile({ profilePicture, image, setImage, name, id }) {
   }
 
   function handleDelete() {
-    deleteFile({ name, id, avatarFile: profilePicture });
+    deleteFile({ id, avatarFile: profilePicture });
   }
 
   return (

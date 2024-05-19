@@ -32,13 +32,9 @@ export async function createProfilePicture({ id, name, avatarFile }) {
   if (updateError) throw new Error(updateError.message);
 }
 
-export async function deleteProfilePicture({ name, id, avatarFile }) {
-  console.log(avatarFile)
+export async function deleteProfilePicture({ id, avatarFile }) {
   const pathSegments = avatarFile.split('/');
-
-  // Supabase URL format: /storage/v1/object/public/<bucket-name>/<path-to-file>
-  const filePath = pathSegments.slice(6).join('/'); // Get the part after the bucket name
-  console.log(filePath);
+  const filePath = pathSegments.slice(8).join('/'); // Get the part after the bucket name
   const { error: bucketError } = await supabase.storage
     .from('profile_pictures')
     .remove([filePath]);
