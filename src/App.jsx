@@ -16,6 +16,9 @@ import DescriptionGuess, {
 } from './features/gamemodes/DescriptionGuess';
 import Profile from './pages/Profile';
 import ChangeEmailPage from './ui/ChangeEmailPage';
+import LeaderBoard, {
+  LeaderBoardLoader,
+} from './features/leaderboard/LeaderBoard';
 
 function App() {
   const queryClient = new QueryClient({
@@ -28,7 +31,7 @@ function App() {
 
   const persister = createSyncStoragePersister({
     storage: window.localStorage,
-  })
+  });
 
   const router = createBrowserRouter([
     {
@@ -58,7 +61,8 @@ function App() {
         },
         {
           path: 'leaderboard',
-          element: <div>Leaderboard</div>,
+          element: <LeaderBoard />,
+          loader: LeaderBoardLoader,
         },
         {
           path: 'history',
@@ -91,7 +95,7 @@ function App() {
     },
     {
       path: '/changeEmail',
-      element: <ChangeEmailPage />
+      element: <ChangeEmailPage />,
     },
     {
       path: '*',

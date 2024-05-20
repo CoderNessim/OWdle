@@ -25,7 +25,7 @@ export async function createProfilePicture({ id, name, avatarFile }) {
 
   const { error: updateError } = await supabase
     .from('users')
-    .update({ profile_picture: urlData })
+    .update({ profile_picture: `${urlData.publicUrl}/${avatarFile.name}` })
     .eq('user_id', id)
     .select();
 

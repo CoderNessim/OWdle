@@ -1,0 +1,42 @@
+.boardWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.board {
+  text-align: center;
+  background: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 70%;
+}
+
+.leaderboardTitle {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.headers {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.rankUser, .winStats {
+  display: flex;
+  justify-content: space-between;
+  width: 50%;  /* Ensure both headers have the same width */
+}
+
+.rankUser > span, .winStats > span {
+  flex: 1;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .board {
+    width: 90%;
+  }
+}
