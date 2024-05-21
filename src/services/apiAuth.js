@@ -7,7 +7,7 @@ export async function signup({ email, password, name }) {
     options: {
       data: {
         first_name: name,
-        profile_picture: null
+        profile_picture: null,
       },
       emailRedirectTo: 'http://localhost:5173/verified',
     },
@@ -76,7 +76,14 @@ export async function login({ email, password }) {
     .eq('user_id', user.user.id)
     .single();
   if (gameHistoryError) throw new Error(gameHistoryError.message);
-  return { user, gameHistory };
+
+  const { count: rank, error: rankError } = await supabase
+  .from('game_history')
+  .select('user_id', { count: 'exact', head: true })
+  .gte('num_wins', gameHistory.num_wins); 
+
+  if (rankError) throw new Error(rankError.message);
+  return { user, gameHistory, rank };
 }
 
 export async function logout() {

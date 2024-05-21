@@ -1,9 +1,16 @@
 import { Card, Text } from '@mantine/core';
 import { useGameHistory } from '../../hooks/useGameHistory';
+import { useQuery } from '@tanstack/react-query';
+import { getRank } from '../../services/apiGameHistory';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Stats() {
   const { gameHistory, isPending: isGameHistoryPending } = useGameHistory();
-  // Calculate win rate
+  const { data: rank, isPending: isRankPending } = useQuery({
+    queryKey: ['rank'],
+    queryFn: () => getRank(gameHistory?.num_wins),
+  });
+  const navigate = useNavigate();
   const totalGames = gameHistory
     ? gameHistory.num_wins + gameHistory.num_losses
     : 0;
@@ -11,7 +18,7 @@ function Stats() {
     totalGames > 0
       ? ((gameHistory.num_wins / totalGames) * 100).toFixed(2)
       : 'N/A';
-  
+
   return (
     <Card
       shadow="sm"
@@ -28,7 +35,12 @@ function Stats() {
           <Text>Wins: {gameHistory.num_wins}</Text>
           <Text>Losses: {gameHistory.num_losses}</Text>
           <Text>Win rate: {winRate}%</Text>
-          <Text>Leaderboard Ranking: Not ranked</Text>
+          <Text>
+            Leaderboard Ranking:
+            <Link to={`/app/leaderboard?page=${Math.ceil(rank / 5)}`} style={{marginLeft: '4px'}}>
+              {isRankPending ? 'Loading...' : rank}
+            </Link>
+          </Text>
         </>
       ) : (
         <Text>Loading stats...</Text>

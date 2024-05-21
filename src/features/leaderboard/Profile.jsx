@@ -4,7 +4,9 @@ import styles from './Profile.module.css';
 
 function Profile({ profileData, rank }) {
   const totalGames = profileData.num_wins + profileData.num_losses;
-  const winRate = ((profileData.num_wins / totalGames) * 100).toFixed(2);
+  const winRate =
+    profileData.num_wins &&
+    ((profileData.num_wins / totalGames) * 100).toFixed(2);
 
   return (
     <div className={styles.profile}>

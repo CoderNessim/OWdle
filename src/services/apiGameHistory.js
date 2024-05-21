@@ -13,7 +13,7 @@ export async function uploadGame({
   let parsedGameHistory = [];
 
   //in case game history doesnt load which happens when authenticated user reloads page
-  if(id && currentGameHistory == undefined) {
+  if (id && currentGameHistory == undefined) {
     currentGameHistory = await getGameHistory(id);
   }
 
@@ -76,3 +76,13 @@ export async function getGameHistory(id) {
   return gameHistory;
 }
 
+export async function getRank(numWins) {
+  const { count: rank, error: rankError } = await supabase
+    .from('game_history')
+    .select('user_id', { count: 'exact', head: true })
+    .gte('num_wins', numWins);
+
+  if (rankError) throw new Error(rankError.message);
+  
+  return rank;
+}

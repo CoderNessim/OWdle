@@ -19,6 +19,7 @@ import ChangeEmailPage from './ui/ChangeEmailPage';
 import LeaderBoard, {
   LeaderBoardLoader,
 } from './features/leaderboard/LeaderBoard';
+import MatchHistory from './features/MatchHistory/MatchHistory';
 
 function App() {
   const queryClient = new QueryClient({
@@ -66,7 +67,7 @@ function App() {
         },
         {
           path: 'history',
-          element: <div>Match History</div>,
+          element: <MatchHistory />,
         },
         {
           path: 'descriptionGuess',

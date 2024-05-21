@@ -16,7 +16,6 @@ export function useUpdateEmail() {
       queryClient.invalidateQueries({ queryKey: ['user'] });
     },
     onError: (error) => {
-      console.log(error.message);
       notifications.show({
         title: 'There was an error while updating your email',
         message: error.message,

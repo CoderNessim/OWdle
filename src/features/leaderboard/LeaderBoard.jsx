@@ -2,23 +2,16 @@ import { useLoaderData, useSearchParams } from 'react-router-dom';
 import { getLeaderboard } from '../../services/apiLeaderboard';
 import styles from './LeaderBoard.module.css';
 import Profile from './Profile';
-import { useState } from 'react';
 import { Pagination } from '@mantine/core';
 
 export default function LeaderBoard() {
   const { data: accounts, total } = useLoaderData();
-  console.log(total);
-  const [activePage, setActivePage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = parseInt(searchParams.get('page') || '1', 10);
-  console.log(page);
-  console.log(accounts);
-
+  const activePage = searchParams.get('page') || 1;
   function handlePageChange(page) {
-    setActivePage(page);
     setSearchParams({ page });
   }
-
+console.log(activePage)
   return (
     <>
       <div className={styles.boardWrapper}>
@@ -35,12 +28,16 @@ export default function LeaderBoard() {
             </div>
           </div>
           {accounts.map((account, index) => (
-            <Profile key={index} profileData={account} rank={index + 1} />
+            <Profile
+              key={index}
+              profileData={account}
+              rank={5 * (activePage-1) + index + 1}
+            />
           ))}
         </div>
         <Pagination
           total={Math.ceil(total / 5)}
-          value={activePage}
+          value={Number(activePage)}
           onChange={handlePageChange}
           style={{ paddingTop: '1rem', paddingBottom: '1rem' }}
         />
