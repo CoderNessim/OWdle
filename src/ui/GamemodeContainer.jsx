@@ -30,7 +30,7 @@ function GamemodeContainer() {
         badgeColor="yellow"
         badgeText="medium"
         title="Guess the hero"
-        description="Guess the hero, every guess provides hints based on the hero's abilities"
+        description="Guess the hero, every guess provides hints based on the hero's stats"
       />
       <Gamemode
         imageUrl={roadhogImg}

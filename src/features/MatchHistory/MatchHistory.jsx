@@ -15,8 +15,7 @@ function MatchHistory() {
 
   const currentPage = parseInt(searchParams.get('page')) || 1;
 
-  const parsedGameHistory = JSON.parse(gameHistory.games);
-
+  const parsedGameHistory = JSON.parse(gameHistory.games).reverse();
   const totalGames = parsedGameHistory.length;
   const totalPages = Math.ceil(totalGames / itemsPerPage);
 

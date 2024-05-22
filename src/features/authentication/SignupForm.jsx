@@ -32,7 +32,6 @@ function SignupForm() {
   const { mutate, isPending } = useSignup();
 
   function handleSubmit(data) {
-    console.log(data);
     mutate(data);
   }
 

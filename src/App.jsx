@@ -20,6 +20,7 @@ import LeaderBoard, {
   LeaderBoardLoader,
 } from './features/leaderboard/LeaderBoard';
 import MatchHistory from './features/MatchHistory/MatchHistory';
+import HeroGuess, { heroGuessLoader } from './features/gamemodes/HeroGuess';
 
 function App() {
   const queryClient = new QueryClient({
@@ -53,10 +54,6 @@ function App() {
       errorElement: <Error />,
       children: [
         {
-          path: 'settings',
-          element: <div>Settings</div>,
-        },
-        {
           path: 'profile',
           element: <Profile />,
         },
@@ -81,7 +78,8 @@ function App() {
         },
         {
           path: 'heroGuess',
-          element: <div>hero guess</div>,
+          element: <HeroGuess />,
+          loader: heroGuessLoader
         },
         {
           path: 'abilityGuess',

@@ -2,15 +2,14 @@ import { Card, Text } from '@mantine/core';
 import { useGameHistory } from '../../hooks/useGameHistory';
 import { useQuery } from '@tanstack/react-query';
 import { getRank } from '../../services/apiGameHistory';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Stats() {
   const { gameHistory, isPending: isGameHistoryPending } = useGameHistory();
   const { data: rank, isPending: isRankPending } = useQuery({
     queryKey: ['rank'],
-    queryFn: () => getRank(gameHistory?.num_wins),
+    queryFn: () => getRank(gameHistory?.user_id),
   });
-  const navigate = useNavigate();
   const totalGames = gameHistory
     ? gameHistory.num_wins + gameHistory.num_losses
     : 0;

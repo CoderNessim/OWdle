@@ -11,7 +11,6 @@ export default function LeaderBoard() {
   function handlePageChange(page) {
     setSearchParams({ page });
   }
-console.log(activePage)
   return (
     <>
       <div className={styles.boardWrapper}>

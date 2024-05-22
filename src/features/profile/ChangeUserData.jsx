@@ -3,7 +3,7 @@ import ModalChangeUserData from './ModalChangeUserData';
 import { useUpdatePassword } from '../../hooks/useUpdatePassword';
 import { useUpdateEmail } from '../../hooks/useUpdateEmail';
 
-function ChangeUserData({ user, isUserPending }) {
+function ChangeUserData({ user }) {
   const { mutate: mutateUsername } = useUpdateUsername();
   const { mutate: mutatePassword } = useUpdatePassword();
   const { mutate: mutateEmail } = useUpdateEmail();

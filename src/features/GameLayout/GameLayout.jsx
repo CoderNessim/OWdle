@@ -21,7 +21,8 @@ export default function GameLayout({
   question,
   imageQuestion,
   portrait,
-  isImageGuess
+  isImageGuess,
+  setCurrentAttempt,
 }) {
   const { state, dispatch } = useGameReducer(numTries);
   const revalidator = useRevalidator();
@@ -49,7 +50,7 @@ export default function GameLayout({
       dispatch({ type: 'winGame' });
     } else {
       dispatch({ type: 'incrementAttempt' });
-
+      setCurrentAttempt((prev) => prev + 1);
       if (state.currentAttempt !== numTries) {
         notifications.show({
           title: `${numTries - state.currentAttempt} Attempts Remaining`,
@@ -71,6 +72,7 @@ export default function GameLayout({
     revalidator.revalidate();
     setIsAnswerCorrect(false);
     dispatch({ type: 'resetGame' });
+    setCurrentAttempt(1);
   }
 
   return (
@@ -134,7 +136,12 @@ export default function GameLayout({
         )}
       </Form>
       <div className={styles.buttonGroup}>
-        <BackButton onClick={() => navigate(-1)} />
+        <BackButton
+          onClick={() => {
+            navigate(-1);
+            setCurrentAttempt(1);
+          }}
+        />
         <Button onClick={handleReset} className={styles.playAgain}>
           Play Again
         </Button>

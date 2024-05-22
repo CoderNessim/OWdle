@@ -1,0 +1,13 @@
+.characterStats {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #f0f0f0; /* Optional: for better visualization */
+  border: 1px solid #ccc; /* Optional: for better visualization */
+  border-radius: 5px; /* Optional: for better visualization */
+  flex-direction: column;
+}
+
+.characterStats span {
+  margin: 0 10px;
+}

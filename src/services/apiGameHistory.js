@@ -9,7 +9,6 @@ export async function uploadGame({
   correctAnswer,
   gamemode,
 }) {
-  console.log('Current Game History:', currentGameHistory);
   let parsedGameHistory = [];
 
   //in case game history doesnt load which happens when authenticated user reloads page
@@ -37,7 +36,6 @@ export async function uploadGame({
     gamemode: gamemode,
   });
 
-  console.log('Updated Game History:', parsedGameHistory);
   const updatedGameHistoryJSON = JSON.stringify(parsedGameHistory);
 
   const { error } = await supabase
@@ -54,10 +52,7 @@ export async function uploadGame({
     .eq('user_id', id)
     .select();
 
-  if (error) {
-    console.error('Failed to update game history:', error.message);
-    throw new Error(error.message);
-  }
+  if (error) throw new Error(error.message);
 
   const gameHistory = await getGameHistory(id);
 
@@ -76,13 +71,21 @@ export async function getGameHistory(id) {
   return gameHistory;
 }
 
-export async function getRank(numWins) {
-  const { count: rank, error: rankError } = await supabase
+export async function getRank(userId) {
+  const { data, error } = await supabase
     .from('game_history')
-    .select('user_id', { count: 'exact', head: true })
-    .gte('num_wins', numWins);
+    .select('user_id, num_wins')
+    .order('num_wins', { ascending: false })
 
-  if (rankError) throw new Error(rankError.message);
-  
-  return rank;
+  if (error) throw new Error(error.message);
+
+  if (!data || data.length === 0) return 0; // If no data, the rank is 0
+
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].user_id === userId) {
+      return i + 1; 
+    }
+  }
+
+  return data.length + 1; // If userId is not found, return rank as length + 1
 }
