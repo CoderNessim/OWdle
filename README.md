@@ -2,6 +2,9 @@
 
 A game application similar to wordle, but based on overwatch
 
+## NOTE
+Currently, authentication does not work because the project has not been used in over 90 days, thus, Supabase has closed down my database and I would need to create a new one. Core game functionality still works, will update readme once this has been fixed
+
 ## Table of Contents
 
 - [Usage](#usage)
